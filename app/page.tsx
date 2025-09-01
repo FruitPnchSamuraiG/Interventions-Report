@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ExternalLink, Search, Filter, X } from "lucide-react"
+import InterventionCSVManager from '../components/InterventionCSVManager'
 
 interface Intervention {
   type: string
@@ -719,6 +720,14 @@ export default function PlatformInterventionsTaxonomy() {
                 </div>
               </div>
 
+              {/* Contribute Button */}
+              <div className="mb-6">
+                <a href="/contribute">
+                  <Button className="w-full" variant="outline" type="button">
+                    Contribute an Intervention
+                  </Button>
+                </a>
+              </div>
               {/* Filter Categories */}
               <Accordion type="multiple" defaultValue={["focus", "driver"]} className="w-full">
                 {Object.entries(filterOptions).map(([category, options]) => (
@@ -762,9 +771,15 @@ export default function PlatformInterventionsTaxonomy() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
+
             <div className="mb-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold text-gray-900">Interventions ({filteredInterventions.length})</h2>
+                <a href="/contribute">
+                  <Button className="ml-4" variant="outline" type="button">
+                    Contribute an Intervention
+                  </Button>
+                </a>
               </div>
             </div>
 
@@ -887,6 +902,10 @@ export default function PlatformInterventionsTaxonomy() {
                 </Button>
               </div>
             )}
+          </div>
+          {/* ADD THIS NEW SECTION */}
+          <div className="mt-12">
+            <InterventionCSVManager />
           </div>
         </div>
       </div>
