@@ -24,7 +24,6 @@ app/
   api/interventions/route.ts  # API route for Google Sheets integration
 public/                       # Static assets
 styles/                       # Global styles
-interventionsreport-c141dc7077a5.json # Google service account credentials (NOT committed)
 ```
 
 ## Setup Instructions
@@ -43,7 +42,7 @@ pnpm install
 ```
 
 ### 3. Add Google Service Account Credentials
-- Download your Google service account JSON file (e.g., `interventionsreport-c141dc7077a5.json`).
+- Download your Google service account JSON file.
 - Place it in the project root (same folder as `package.json`).
 - **Do not commit this file!** It is already in `.gitignore`.
 
@@ -63,18 +62,10 @@ Visit [http://localhost:3000](http://localhost:3000) to view the app.
 - For Vercel/Netlify: Use environment variables or a secrets manager to provide the service account credentials (do not commit the JSON file).
 - Make sure to set up the credentials file or environment variables in your deployment environment.
 
-## Security
-- The Google service account JSON is ignored by git via `.gitignore`.
-- Never share or commit your private key.
 
 ## Customization
 - To change the required fields or validation, edit `components/InterventionCSVManager.tsx`.
 - To change the Google Sheet, update `SHEET_ID` and `SHEET_NAME` in the API route.
-
-## Troubleshooting
-- **Submission stuck on 'Submitting...':** Check the API route and Google credentials.
-- **No data in Google Sheet:** Make sure the service account has access to the sheet.
-- **TypeScript errors:** Run `npm run lint` or check your editor for details.
 
 ## License
 MIT
