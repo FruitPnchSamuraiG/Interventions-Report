@@ -1,20 +1,12 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { JWT } from "google-auth-library";
-import fs from "fs";
+import { GoogleAuth } from "google-auth-library";
 
 const SHEET_ID = "1X484pNIDsDvlO1b5Xi7t4kqewc-rzxSanWxkFtywsFE";
 const SHEET_NAME = "Sheet1";
 
-// Load service account credentials from JSON file (not committed to git)
-type ServiceAccountCredentials = { client_email: string; private_key: string };
-let serviceAccountCredentials: ServiceAccountCredentials;
-try {
-  serviceAccountCredentials = JSON.parse(fs.readFileSync("interventionsreport-c141dc7077a5.json", "utf8"));
-} catch (err) {
-  throw new Error("Service account credentials file not found. Please add interventionsreport-c141dc7077a5.json to the project root.");
-}
+
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,13 +19,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const serviceAccountAuth = new JWT({
-      email: serviceAccountCredentials.client_email,
-      key: serviceAccountCredentials.private_key,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
 
-    const doc = new GoogleSpreadsheet(SHEET_ID, serviceAccountAuth);
+    // Load credentials from environment variable (stringified JSON)
+    const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON || "{}");
+    const auth = new GoogleAuth({
+      credentials,
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"]
+    });
+    const authClient = await auth.getClient();
+
+    const doc = new GoogleSpreadsheet(SHEET_ID, authClient);
     await doc.loadInfo();
 
     console.log("Available sheets:", doc.sheetsByIndex.map(s => s.title));
